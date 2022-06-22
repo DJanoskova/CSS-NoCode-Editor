@@ -1,6 +1,6 @@
 {
   "name": "react-css-nocode-editor",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "author": "DJanoskova",
   "license": "MIT",
   "main": "./lib/cjs/index.js",
