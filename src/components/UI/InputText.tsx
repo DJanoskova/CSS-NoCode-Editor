@@ -30,6 +30,8 @@ const InputStyled = styled.input<{
   
   &:focus {
     border-color: ${({ accent }) => accent};
+    background-color: ${({ inputBg }) => inputBg};
+    color: ${({ inputColor }) => inputColor};
   }
 `;
 

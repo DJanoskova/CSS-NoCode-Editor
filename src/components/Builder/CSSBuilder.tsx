@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import styled from 'styled-components';
 
 import { StyleRule, ThemeType } from '../../types';
@@ -22,6 +22,7 @@ const StyledWrapper = styled.div<{ fontSize: string; color: string; spacing: num
 
 const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}, onChange }) => {
   const [localStyle, setLocalStyle] = useState<StyleRule[]>(() => calculateStyleArray(style));
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const stringifiedTheme = JSON.stringify(theme);
 
   const combinedTheme = useMemo(() => {
@@ -45,34 +46,41 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
     return compiled;
   }, [localStyle]);
 
-  useEffect(() => {
-    const result = calculateStyleArray(style);
-    setLocalStyle(prev => {
-      if (JSON.stringify(prev) === JSON.stringify(result)) {
-        return prev;
-      }
-      return result;
-    });
-  }, [style]);
+  // useEffect(() => {
+  //   const result = calculateStyleArray(style);
+  //   setLocalStyle(prev => {
+  //     if (JSON.stringify(prev) === JSON.stringify(result)) {
+  //       return prev;
+  //     }
+  //     return result;
+  //   });
+  // }, [style]);
 
-  const handleKeydown = useCallback((event: KeyboardEvent) => {
-    if (event.key !== 'Enter' && event.code !== 'Enter') return;
-
+  const handleFocusNextElement = useCallback(() => {
     const activeElement = document.activeElement;
     if (!activeElement || activeElement.tagName.toLowerCase() !== 'input') return;
 
     const order = Number(activeElement.getAttribute('data-editor-order'));
-    const next = document.querySelector(`input[data-editor-order="${order + 1}"]`);
+    const parent = wrapperRef.current;
+    if (!parent) return;
+
+    const next = parent.querySelector(`input[data-editor-order="${order + 1}"]`);
     if (next) {
       (next as any).select();
     }
   }, []);
 
+  const handleKeydown = useCallback((event: KeyboardEvent) => {
+    if (event.key !== 'Enter' && event.code !== 'Enter') return;
+
+    handleFocusNextElement();
+  }, [handleFocusNextElement]);
+
   useEffect(() => {
-    document.addEventListener('keydown', handleKeydown);
+    wrapperRef.current?.addEventListener('keydown', handleKeydown, false);
 
     return () => {
-      document.removeEventListener('keydown', handleKeydown);
+      wrapperRef.current?.removeEventListener('keydown', handleKeydown, false);
     }
   }, [handleKeydown]);
 
@@ -106,7 +114,12 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
 
   return (
     <ThemeContext.Provider value={combinedTheme}>
-      <StyledWrapper fontSize={combinedTheme.fontSize} color={combinedTheme.color} spacing={combinedTheme.spacing}>
+      <StyledWrapper
+        fontSize={combinedTheme.fontSize}
+        color={combinedTheme.color}
+        spacing={combinedTheme.spacing}
+        ref={wrapperRef}
+      >
         {localStyle.map((rule, index) => {
           return (
             <RuleWrapper

@@ -19,7 +19,6 @@ const StyledNameWrapper = styled.div<{ fullwidth: boolean }>`
 `;
 
 const RuleName: FunctionComponent<RuleNameProps> = ({ value = '', onChange, fullwidth = true, order }) => {
-  const [isEdit, setIsEdit] = useState(!value);
   const [localValue, setLocalValue] = useState(value);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,35 +28,27 @@ const RuleName: FunctionComponent<RuleNameProps> = ({ value = '', onChange, full
     onChange(newValue);
   }
 
-  const handleCloseEdit = () => {
-    if (value) {
-      setIsEdit(false);
-    }
-  }
-
   const handleOpenEdit = () => {
-    setIsEdit(true);
     inputRef.current?.select();
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleCloseEdit();
   }
 
   return (
     <StyledNameWrapper fullwidth={fullwidth}>
       <form onSubmit={handleSubmit}>
         <InputText
-          transparent={!isEdit}
           ref={inputRef}
           type="text"
           value={localValue}
           placeholder="Property"
           onChange={handleChange}
-          onBlur={handleCloseEdit}
+          // onBlur={handleCloseEdit}
           onClick={handleOpenEdit}
           order={order}
+          transparent
         />
       </form>
     </StyledNameWrapper>

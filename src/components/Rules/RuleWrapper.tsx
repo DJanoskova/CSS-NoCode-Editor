@@ -24,7 +24,7 @@ const StyledWrapper = styled.div<{ backgroundColor: string; shadow: string; radi
   margin: ${({ spacing }) => spacing}px 0;
 `;
 
-const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange, onRemove, order }) => {
+const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange, order, onRemove }) => {
   const theme = useContext(ThemeContext);
   const defaultMode = getRuleDefaultMode(data.property);
   const valueRef = useRef<HTMLInputElement>(null);
@@ -33,7 +33,9 @@ const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange,
     onChange({ ...data, ...newData });
   };
 
-  const handleChangeProperty = (property: string) => {
+  const handleChangeProperty = (property: string = ' ') => {
+    console.log('property', property);
+    // const
     handleChange({ property });
   }
 
@@ -42,7 +44,9 @@ const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange,
   }
 
   const handleBlur = () => {
-    if (!data.property) onRemove(data.id);
+    console.log('blr');
+    console.log('data', data);
+    if (!data.property.trim()) onRemove(data.id);
   }
 
   return (
