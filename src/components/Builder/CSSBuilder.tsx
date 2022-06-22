@@ -12,6 +12,7 @@ interface CSSBuilderProps {
   style: string;
   theme?: ThemeType;
   onChange?: (style: string) => void;
+  reactive?: boolean;
 }
 
 const StyledWrapper = styled.div<{ fontSize: string; color: string; spacing: number; }>`
@@ -20,7 +21,7 @@ const StyledWrapper = styled.div<{ fontSize: string; color: string; spacing: num
   color: ${({ color }) => color};
 `
 
-const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}, onChange }) => {
+const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}, onChange, reactive = false }) => {
   const [localStyle, setLocalStyle] = useState<StyleRule[]>(() => calculateStyleArray(style));
   const wrapperRef = useRef<HTMLDivElement>(null);
   const stringifiedTheme = JSON.stringify(theme);
@@ -46,15 +47,17 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
     return compiled;
   }, [localStyle]);
 
-  // useEffect(() => {
-  //   const result = calculateStyleArray(style);
-  //   setLocalStyle(prev => {
-  //     if (JSON.stringify(prev) === JSON.stringify(result)) {
-  //       return prev;
-  //     }
-  //     return result;
-  //   });
-  // }, [style]);
+  useEffect(() => {
+    if (!reactive) return;
+
+    const result = calculateStyleArray(style);
+    setLocalStyle(prev => {
+      if (JSON.stringify(prev) === JSON.stringify(result)) {
+        return prev;
+      }
+      return result;
+    });
+  }, [style, reactive]);
 
   const handleFocusNextElement = useCallback(() => {
     const activeElement = document.activeElement;
@@ -71,7 +74,12 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
   }, []);
 
   const handleKeydown = useCallback((event: KeyboardEvent) => {
-    if (event.key !== 'Enter' && event.code !== 'Enter') return;
+    const focusNextKeys = [':', ';'];
+    if (!focusNextKeys.includes(event.key) && event.key !== 'Enter' && event.code !== 'Enter') return;
+
+    if (focusNextKeys.includes(event.key)) {
+      event.preventDefault();
+    }
 
     handleFocusNextElement();
   }, [handleFocusNextElement]);

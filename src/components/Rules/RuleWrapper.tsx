@@ -34,8 +34,6 @@ const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange,
   };
 
   const handleChangeProperty = (property: string = ' ') => {
-    console.log('property', property);
-    // const
     handleChange({ property });
   }
 
@@ -44,8 +42,6 @@ const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange,
   }
 
   const handleBlur = () => {
-    console.log('blr');
-    console.log('data', data);
     if (!data.property.trim()) onRemove(data.id);
   }
 
