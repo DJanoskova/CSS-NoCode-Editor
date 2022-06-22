@@ -12,8 +12,8 @@ const InputColorStyled = styled.input<{ background: string }>`
   position: absolute;
   top: -28px;
   right: 0;
-  width: 1px;
-  height: 1px;
+  width: 0;
+  height: 0;
   border-radius: 50%;
   border: none;
   padding: 0;
@@ -37,6 +37,7 @@ const InputColorStyled = styled.input<{ background: string }>`
     height: 20px;
     border-radius: 50%;
     cursor: pointer;
+    border: 1px rgba(0, 0, 0, 0.1) solid;
   }
 `;
 
@@ -46,10 +47,14 @@ const RuleValueColor: FunctionComponent<RuleValueInputProps> = ({ value, onChang
     onChange(newValue);
   }
 
+  const leftBrackets = (value.match(/\(/g) || []).length;
+  const rightBrackets = (value.match(/\)/g) || []).length;
+  const isEven = leftBrackets === rightBrackets;
+
   return (
     <div>
       <InputColorWrapperStyled>
-        <InputColorStyled type="color" value={value} onChange={handleChange} background={value} />
+        <InputColorStyled type="color" value={value} onChange={handleChange} background={isEven ? value : ''} />
       </InputColorWrapperStyled>
       <RuleValueText value={value} onChange={onChange} order={order} />
     </div>

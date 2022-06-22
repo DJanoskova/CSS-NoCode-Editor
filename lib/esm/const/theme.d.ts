@@ -1,5 +1,4 @@
-/// <reference types="react" />
-declare const ThemeContext: import("react").Context<{
+export declare const defaultTheme: {
     accent: string;
     background: string;
     color: string;
@@ -9,5 +8,4 @@ declare const ThemeContext: import("react").Context<{
     radius: number;
     spacing: number;
     fontSize: string;
-}>;
-export default ThemeContext;
+};

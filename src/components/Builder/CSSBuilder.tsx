@@ -2,8 +2,9 @@ import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } f
 import styled from 'styled-components';
 
 import { StyleRule, ThemeType } from '../../types';
+import { defaultTheme } from '../../const/theme';
 import { addStyleEmptyRule, calculateStyleArray } from '../../helpers/rules';
-import ThemeContext, { defaultTheme } from '../../context/ThemeContext';
+import ThemeContext from '../../context/ThemeContext';
 
 import RuleWrapper from '../Rules/RuleWrapper';
 
@@ -13,9 +14,8 @@ interface CSSBuilderProps {
   onChange?: (style: string) => void;
 }
 
-const StyledWrapper = styled.div<{ fontSize: string; color: string; }>`
-  height: 100%;
-  margin: -8px 0;
+const StyledWrapper = styled.div<{ fontSize: string; color: string; spacing: number; }>`
+  margin: -${({ spacing }) => spacing}px 0;
   font-size: ${({ fontSize }) => fontSize};
   color: ${({ color }) => color};
 `
@@ -25,14 +25,22 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
   const stringifiedTheme = JSON.stringify(theme);
 
   const combinedTheme = useMemo(() => {
+    const userTheme: ThemeType = JSON.parse(stringifiedTheme);
+
     return {
       ...defaultTheme,
       ...JSON.parse(stringifiedTheme),
+      inputColor: userTheme.inputColor || userTheme.color || defaultTheme.inputColor,
     }
   }, [stringifiedTheme]);
 
   const compiledStyle = useMemo(() => {
-    const result = localStyle.map(rule => `${rule.property}: ${rule.value}`);
+    const result: string[] = [];
+    localStyle.forEach(rule => {
+      if (rule.property.trim()) {
+        result.push(`${rule.property.trim()}: ${rule.value.trim()}`);
+      }
+    });
     const compiled = result.join(';\n');
     return compiled;
   }, [localStyle]);
@@ -98,7 +106,7 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
 
   return (
     <ThemeContext.Provider value={combinedTheme}>
-      <StyledWrapper fontSize={combinedTheme.fontSize} color={combinedTheme.color}>
+      <StyledWrapper fontSize={combinedTheme.fontSize} color={combinedTheme.color} spacing={combinedTheme.spacing}>
         {localStyle.map((rule, index) => {
           return (
             <RuleWrapper

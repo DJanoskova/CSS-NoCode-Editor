@@ -8,7 +8,14 @@ interface InputTextProps extends ComponentProps<'input'> {
   order?: number;
 }
 
-const InputStyled = styled.input<{ inputBg: string; accent: string; radius: number; transparent: boolean; }>`
+const InputStyled = styled.input<{
+  inputBg: string;
+  inputColor: string;
+  accent: string;
+  radius: number;
+  transparent: boolean;
+  color: string;
+}>`
   border-radius: ${({ radius }) => radius}px;
   background-color: ${({ inputBg, transparent }) => transparent ? 'transparent' : inputBg};
   box-sizing: border-box;
@@ -19,7 +26,7 @@ const InputStyled = styled.input<{ inputBg: string; accent: string; radius: numb
   border: 2px transparent solid;
   font-family: inherit;
   font-size: inherit;
-  color: inherit;
+  color: ${({ inputColor, color, transparent }) => transparent ? color : inputColor};
   
   &:focus {
     border-color: ${({ accent }) => accent};
@@ -36,6 +43,8 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>((props, ref) => {
       radius={theme.radius || 0}
       type="text" ref={ref}
       data-editor-order={props.order}
+      inputColor={theme.inputColor}
+      color={theme.color}
       {...props as any}
     />
   );

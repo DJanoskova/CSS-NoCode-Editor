@@ -52,18 +52,6 @@ export const getRuleDefaultMode = (rule: string) => {
   return RULE_MODES.text;
 }
 
-export const getRuleAllowedModes = (rule: string) => {
-  if (numberRules.includes(rule)) {
-    return [RULE_MODES.slider, RULE_MODES.text];
-  }
-
-  if (colorRules.includes(rule)) {
-    return [RULE_MODES.color, RULE_MODES.text];
-  }
-
-  return [RULE_MODES.text];
-}
-
 export const getRuleRange = (property: string, unit = 'px') => {
   const max100Units = ['%', 'vh', 'vw'];
   const max100properties = ['font-size', ...paddings, ...borderRadiuses, ...margins];

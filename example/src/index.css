@@ -1,5 +1,5 @@
 html {
-    --primary: red;
+    --primary: #ff00a2;
 }
 
 body {
@@ -22,8 +22,23 @@ body {
 }
 
 .editor-wrapper {
-    width: 270px;
+    width: 410px;
     padding: 20px;
     overflow-y: auto;
     flex-shrink: 0;
+}
+
+@media all and (max-width: 1400px) {
+    .editor-wrapper {
+        width: 300px;
+    }
+}
+
+pre {
+    overflow: auto;
+}
+
+p {
+    font-size: 14px;
+    margin-top: 20px;
 }
