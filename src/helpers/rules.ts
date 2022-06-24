@@ -106,14 +106,20 @@ export const calculateStyleArray = (style: string) => {
 }
 
 export const addStyleEmptyRule = (style: StyleRule[]) => {
-  const lastRule = style[style.length - 1];
-  const hasEmpty = !lastRule.property;
+  let hasEmpty = true;
+  let nextId = 1;
+
+  if (style.length) {
+    const lastRule = style[style.length - 1];
+    nextId = lastRule.id + 1;
+    hasEmpty = !lastRule.property;
+  }
 
   if (!hasEmpty) {
     style.push({
-      id: lastRule.id + 1,
+      id: nextId,
       value: '',
       property: '',
-    })
+    });
   }
 }
