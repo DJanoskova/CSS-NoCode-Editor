@@ -6,13 +6,21 @@
 
 ---
 
-## Preview
+### Links
 
-<img src="https://github.com/DJanoskova/CSS-NoCode-Editor/blob/master/public/editor.png" alt="Editor with default theme"></img>
+https://www.npmjs.com/package/react-css-nocode-editor
+
+https://github.com/DJanoskova/CSS-NoCode-Editor
 
 ---
 
-## Usage
+### Preview
+
+<img src="https://github.com/DJanoskova/CSS-NoCode-Editor/blob/master/public/editor.png" alt="Editor with default theme" width="400px"></img>
+
+---
+
+### Usage
 
 ```typescript jsx
 import { useState } from 'react';
@@ -45,7 +53,7 @@ export default App;
 
 ---
 
-## Example
+### Example
 
 Fork this repository and run
 
@@ -57,9 +65,9 @@ Fork this repository and run
 
 ---
 
-## Theming
+### Theming
 
-<img src="https://github.com/DJanoskova/CSS-NoCode-Editor/blob/master/public/editor-dark.png" alt="Editor with a custom dark theme"></img>
+<img src="https://github.com/DJanoskova/CSS-NoCode-Editor/blob/master/public/editor-dark.png" alt="Editor with a custom dark theme" width="400px"></img>
 
 ```typescript jsx
 import { useState } from 'react';
@@ -81,7 +89,9 @@ const App = () => {
   const [style, setStyle] = useState(styleString);
 
   return (
-    <CSSBuilder style={style} onChange={setStyle} theme={darkTheme} />
+    <div style={{ background: '#111' }}>
+      <CSSBuilder style={style} onChange={setStyle} theme={darkTheme} />
+    </div>
   )
 }
 
@@ -107,7 +117,7 @@ const defaultTheme = {
 
 ---
 
-## Reactivity
+### Reactivity
 
 If you want two-way binding on your editor, for a state that's also being changed externally, use the _reactive_ prop, which is _false_ by default for performance reasons
 

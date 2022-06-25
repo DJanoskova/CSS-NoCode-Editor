@@ -30,17 +30,24 @@ const App = () => {
 
   return (
     <div className="App">
-      <div className="editor-wrapper">
-        <CSSBuilder style={style} onChange={setStyle}/>
-      </div>
-      <div className="content">
-        <style>.circle {`{ ${style} }`}</style>
-        <div className="circle">
-          Circle with a style
+      <div className="app-body">
+        <div className="editor-wrapper">
+          <CSSBuilder style={style} onChange={setStyle}/>
         </div>
-        <pre>
-          {style}
-        </pre>
+        <div className="content-wrapper">
+          <div className="content">
+            <style>.circle {`{ ${style} }`}</style>
+            <div className="circle">
+              Circle with a style
+            </div>
+            <pre>{style}</pre>
+          </div>
+        </div>
+      </div>
+      <div className="app-footer">
+        <a href="https://www.npmjs.com/package/react-css-nocode-editor" target="_blank" rel="noreferrer noopener">
+          https://www.npmjs.com/package/react-css-nocode-editor
+        </a>
       </div>
     </div>
   )
