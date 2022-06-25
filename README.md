@@ -8,7 +8,7 @@
 
 ## Preview
 
-<img src="https://github.com/DJanoskova/react-css-nocode-editor/blob/master/example/editor.png" alt="Editor with default theme"></img>
+<img src="https://github.com/DJanoskova/react-css-nocode-editor/blob/master/public/editor.png" alt="Editor with default theme"></img>
 
 ---
 
@@ -59,7 +59,7 @@ Fork this repository and run
 
 ## Theming
 
-<img src="https://github.com/DJanoskova/react-css-nocode-editor/blob/master/example/editor-dark.png" alt="Editor with a custom dark theme"></img>
+<img src="https://github.com/DJanoskova/react-css-nocode-editor/blob/master/public/editor-dark.png" alt="Editor with a custom dark theme"></img>
 
 ```typescript jsx
 import { useState } from 'react';
