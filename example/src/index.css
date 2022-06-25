@@ -22,6 +22,7 @@ a {
 
 .app-body {
     display: flex;
+    height: 100%;
 }
 
 .app-footer {
