@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { CSSBuilder, defaultTheme, ThemeType } from 'react-css-nocode-editor';
+import { CSSBuilder, ThemeType } from 'react-css-nocode-editor';
 
 const styleString = `
     background-color: var(--primary);
@@ -13,17 +13,6 @@ const styleString = `
     border-radius: 50%;
     box-sizing: border-box;
 `
-
-const darkTheme: ThemeType = {
-  radius: 2,
-  shadow: '0 3px 10px rgba(255, 255, 255, 0.2)',
-  fontSize: '14px',
-  spacing: 10,
-  accent: 'limegreen',
-  color: 'white',
-  inputBg: '#79f179',
-  inputColor: '#000000',
-};
 
 const App = () => {
   const [style, setStyle] = useState(styleString);
