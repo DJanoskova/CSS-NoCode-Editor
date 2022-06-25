@@ -18,7 +18,7 @@ Example: https://react-css-nocode-editor.netlify.app/
 
 ### Preview
 
-<img src="https://github.com/DJanoskova/CSS-NoCode-Editor/blob/master/public/editor.png" alt="Editor with default theme" width="400px"></img>
+<img src="./public/editor.png" alt="Editor with default theme" width="400px"></img>
 
 ---
 
@@ -69,7 +69,7 @@ Fork this repository and run
 
 ### Theming
 
-<img src="https://github.com/DJanoskova/CSS-NoCode-Editor/blob/master/public/editor-dark.png" alt="Editor with a custom dark theme" width="400px"></img>
+<img src="./public/editor-dark.png" alt="Editor with a custom dark theme" width="400px"></img>
 
 ```typescript jsx
 import { useState } from 'react';
