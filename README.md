@@ -59,11 +59,13 @@ export default App;
 
 Fork this repository and run
 
-`cd example/`
+1. `yarn install` (install dependencies for the editor)
+2. `yarn build` (build the editor source)
+3. `cd example`
+4. `yarn install` (install dependencies for the example - editor is installed locally)
+5. `yarn start`
 
-`yarn install`
-
-`yarn start`
+The source is localed in `./example/src/App.tsx`
 
 ---
 
@@ -74,7 +76,7 @@ Fork this repository and run
 ```typescript jsx
 import { useState } from 'react';
 
-import { defaultTheme, ThemeType } from 'react-css-nocode-editor';
+import { ThemeType } from 'react-css-nocode-editor';
 
 const darkTheme: ThemeType = {
   radius: 2,
@@ -121,7 +123,7 @@ const defaultTheme = {
 
 ### Reactivity
 
-If you want two-way binding on your editor, for a state that's also being changed externally, use the _reactive_ prop, which is _false_ by default for performance reasons
+If you want two-way binding for your editor, for a state that's also being changed externally, use the _reactive_ prop, which is _false_ by default for performance reasons
 
 ```typescript jsx
 import { useState } from 'react';
