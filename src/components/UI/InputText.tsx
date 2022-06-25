@@ -29,9 +29,12 @@ const InputStyled = styled.input<{
   color: ${({ inputColor, color, transparent }) => transparent ? color : inputColor};
   
   &:focus, &[value=""] {
-    border-color: ${({ accent }) => accent};
     background-color: ${({ inputBg }) => inputBg};
     color: ${({ inputColor }) => inputColor};
+  }
+
+  &:focus {
+    border-color: ${({ accent }) => accent};
   }
 `;
 
