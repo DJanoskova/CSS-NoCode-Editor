@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { CSSBuilder, ThemeType } from 'react-css-nocode-editor';
+import { CSSBuilder } from 'react-css-nocode-editor';
 
 const styleString = `
     background-color: var(--primary);

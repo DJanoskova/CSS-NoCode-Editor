@@ -8,9 +8,11 @@
 
 ### Links
 
-https://www.npmjs.com/package/react-css-nocode-editor
+NPM: https://www.npmjs.com/package/react-css-nocode-editor
 
-https://github.com/DJanoskova/CSS-NoCode-Editor
+GitHub: https://github.com/DJanoskova/CSS-NoCode-Editor
+
+Example: https://react-css-nocode-editor.netlify.app/
 
 ---
 
