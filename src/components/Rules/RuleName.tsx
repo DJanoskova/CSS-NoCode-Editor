@@ -45,7 +45,6 @@ const RuleName: FunctionComponent<RuleNameProps> = ({ value = '', onChange, full
           value={localValue}
           placeholder="Property"
           onChange={handleChange}
-          // onBlur={handleCloseEdit}
           onClick={handleOpenEdit}
           order={order}
           transparent

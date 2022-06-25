@@ -106,7 +106,7 @@ export const calculateStyleArray = (style: string) => {
 }
 
 export const addStyleEmptyRule = (style: StyleRule[]) => {
-  let hasEmpty = true;
+  let hasEmpty = false;
   let nextId = 1;
 
   if (style.length) {

@@ -59,14 +59,16 @@ const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange,
         fullwidth={defaultMode === RULE_MODES.text}
         order={order}
       />
-      <RuleValueWrapper
-        value={data.value}
-        mode={defaultMode}
-        onChange={handleChangeValue}
-        property={data.property}
-        valueRef={valueRef}
-        order={order + 1}
-      />
+      {data.property.trim() && (
+        <RuleValueWrapper
+          value={data.value}
+          mode={defaultMode}
+          onChange={handleChangeValue}
+          property={data.property}
+          valueRef={valueRef}
+          order={order + 1}
+        />
+      )}
     </StyledWrapper>
   )
 });

@@ -28,7 +28,7 @@ const InputStyled = styled.input<{
   font-size: inherit;
   color: ${({ inputColor, color, transparent }) => transparent ? color : inputColor};
   
-  &:focus {
+  &:focus, &[value=""] {
     border-color: ${({ accent }) => accent};
     background-color: ${({ inputBg }) => inputBg};
     color: ${({ inputColor }) => inputColor};
