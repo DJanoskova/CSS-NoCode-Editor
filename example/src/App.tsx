@@ -32,8 +32,6 @@ const App = () => {
     <div className="App">
       <div className="editor-wrapper">
         <CSSBuilder style={style} onChange={setStyle}/>
-        <p>Default theme</p>
-        <pre>{JSON.stringify(defaultTheme, null, 2)}</pre>
       </div>
       <div className="content">
         <style>.circle {`{ ${style} }`}</style>
@@ -43,11 +41,6 @@ const App = () => {
         <pre>
           {style}
         </pre>
-      </div>
-      <div className="editor-wrapper" style={{ background: '#111111', color: '#ffffff' }}>
-        <CSSBuilder style={style} onChange={setStyle} theme={darkTheme}/>
-        <p>Theme</p>
-        <pre>{JSON.stringify(darkTheme, null, 2)}</pre>
       </div>
     </div>
   )
