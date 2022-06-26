@@ -41,9 +41,13 @@ const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange,
     handleChange({ value });
   }
 
+  const trimmedProperty = data.property.trim()
+
   const handleBlur = () => {
-    if (!data.property.trim()) onRemove(data.id);
+    if (!trimmedProperty) onRemove(data.id);
   }
+
+  const isValid = CSS.supports(trimmedProperty, data.value.trim());
 
   return (
     <StyledWrapper
@@ -59,7 +63,7 @@ const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange,
         fullwidth={defaultMode === RULE_MODES.text}
         order={order}
       />
-      {data.property.trim() && (
+      {trimmedProperty && (
         <RuleValueWrapper
           value={data.value}
           mode={defaultMode}
@@ -67,6 +71,7 @@ const RuleWrapper: FunctionComponent<RuleWrapperProps> = memo(({ data, onChange,
           property={data.property}
           valueRef={valueRef}
           order={order + 1}
+          isValid={isValid}
         />
       )}
     </StyledWrapper>

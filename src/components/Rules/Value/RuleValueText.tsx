@@ -5,7 +5,7 @@ import useInputSelect from '../../../hooks/useInputSelect';
 
 import InputText from '../../UI/InputText';
 
-const RuleValueText: FunctionComponent<RuleValueInputProps> = ({ value, onChange, valueRef, order }) => {
+const RuleValueText: FunctionComponent<RuleValueInputProps> = ({ value, onChange, valueRef, ...inputProps }) => {
   const { inputRef, handleClick } = useInputSelect(valueRef);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,7 @@ const RuleValueText: FunctionComponent<RuleValueInputProps> = ({ value, onChange
       onChange={handleChange}
       onClick={handleClick}
       ref={inputRef}
-      order={order}
+      {...inputProps}
     />
   )
 }

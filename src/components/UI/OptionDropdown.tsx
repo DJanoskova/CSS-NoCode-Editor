@@ -10,9 +10,9 @@ interface OptionDropdownProps {
   onSetOpen: (open: boolean) => void;
 }
 
-const ListStyled = styled.ul<{ radius: number; inputBg: string; }>`
+const ListStyled = styled.ul<{ radius: number; background: string; shadow: string; }>`
   border-radius: ${({ radius }) => radius}px;
-  background-color: ${({ inputBg }) => inputBg};
+  background-color: ${({ background }) => background};
   position: absolute;
   top: 30px;
   left: 0;
@@ -22,12 +22,13 @@ const ListStyled = styled.ul<{ radius: number; inputBg: string; }>`
   margin: 0;
   max-height: 200px;
   overflow-y: auto;
+  box-shadow: ${({ shadow }) => shadow};
 `;
 
 const ListIemStyled = styled.li<{ selected: boolean; accent: string; spacing: number; }>`
   background: ${({ selected, accent }) => selected ? accent : 'transparent'};
   color: ${({ selected }) => selected ? '#ffffff' : 'inherit'};
-  padding: ${({ spacing }) => `${spacing * 0.5}px ${spacing}px`};
+  padding: ${({ spacing }) => `${spacing * 0.5}px ${spacing * 2}px ${spacing * 0.5}px ${spacing}px`};
 `;
 
 const OptionDropdown: FunctionComponent<OptionDropdownProps> = ({ options, wrapperRef, onChange, onSetOpen }) => {
@@ -87,7 +88,7 @@ const OptionDropdown: FunctionComponent<OptionDropdownProps> = ({ options, wrapp
   if (!options.length) return null;
 
   return (
-    <ListStyled inputBg={theme.inputBg} radius={theme.radius} ref={listRef}>
+    <ListStyled background={theme.background} radius={theme.radius} shadow={theme.shadow} ref={listRef}>
       {options.map((option, index) => (
         <ListIemStyled
           key={option}

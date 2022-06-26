@@ -10,6 +10,7 @@ export interface ThemeType {
   color?: string;
   inputBg?: string;
   inputColor?: string;
+  inputError?: string;
   shadow?: string;
   radius?: number;
   spacing?: number;

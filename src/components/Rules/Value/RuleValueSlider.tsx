@@ -28,7 +28,7 @@ const InputRangeStyled = styled.input<{ accent: string }>`
   accent-color: ${({ accent }) => accent};
 `;
 
-const RuleValueSlider: FunctionComponent<RuleValueSliderProps> = ({ value, onChange, property, order }) => {
+const RuleValueSlider: FunctionComponent<RuleValueSliderProps> = ({ value, onChange, property, ...inputProps }) => {
   const theme = useContext(ThemeContext);
 
   const numberValue = parseFloat(value);
@@ -56,7 +56,7 @@ const RuleValueSlider: FunctionComponent<RuleValueSliderProps> = ({ value, onCha
         accent={theme.accent}
       />
       <InputWrapperStyled>
-        <RuleValueText value={value} onChange={handleChangeValue} order={order} />
+        <RuleValueText value={value} onChange={handleChangeValue} {...inputProps} />
       </InputWrapperStyled>
     </WrapperStyled>
   )
