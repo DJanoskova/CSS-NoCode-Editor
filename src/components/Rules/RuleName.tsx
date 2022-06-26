@@ -1,7 +1,18 @@
-import React, { ChangeEvent, FormEvent, FunctionComponent, RefObject, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  FunctionComponent,
+  RefObject,
+  useContext,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import styled from 'styled-components';
 
 import InputText from '../UI/InputText';
+import CSSPropertiesContext from '../../context/CSSPropertiesContext';
+import OptionDropdown from '../UI/OptionDropdown';
 
 interface RuleNameProps {
   value: string;
@@ -16,16 +27,25 @@ const StyledNameWrapper = styled.div<{ fullwidth: boolean }>`
   height: 25px;
   font-size: inherit;
   width: ${({ fullwidth }) => !fullwidth ? `calc(100% - 60px)` : '100%'};
+  position: relative;
 `;
 
 const RuleName: FunctionComponent<RuleNameProps> = ({ value = '', onChange, fullwidth = true, order }) => {
   const [localValue, setLocalValue] = useState(value);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const cssProperties = useContext(CSSPropertiesContext);
+
+  const availableProperties = useMemo(() => {
+    return cssProperties.filter(property => property.startsWith(localValue.toLowerCase()));
+  }, [cssProperties, localValue]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setLocalValue(newValue);
     onChange(newValue);
+    setIsDropdownOpen(true);
   }
 
   const handleOpenEdit = () => {
@@ -49,6 +69,7 @@ const RuleName: FunctionComponent<RuleNameProps> = ({ value = '', onChange, full
           order={order}
           transparent
         />
+        {isDropdownOpen && <OptionDropdown options={availableProperties} wrapperRef={inputRef} />}
       </form>
     </StyledNameWrapper>
   )
