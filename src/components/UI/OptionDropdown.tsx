@@ -1,11 +1,13 @@
 import React, { FunctionComponent, RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import ThemeContext from '../../context/ThemeContext';
 import styled from 'styled-components';
+import useClickOutside from '../../hooks/useClickOutside';
 
 interface OptionDropdownProps {
   options: string[];
   wrapperRef: RefObject<HTMLDivElement>;
   onChange: (value: string) => void;
+  onSetOpen: (open: boolean) => void;
 }
 
 const ListStyled = styled.ul<{ radius: number; inputBg: string; }>`
@@ -28,14 +30,20 @@ const ListIemStyled = styled.li<{ selected: boolean; accent: string; spacing: nu
   padding: ${({ spacing }) => `${spacing * 0.5}px ${spacing}px`};
 `;
 
-const OptionDropdown: FunctionComponent<OptionDropdownProps> = ({ options, wrapperRef }) => {
+const OptionDropdown: FunctionComponent<OptionDropdownProps> = ({ options, wrapperRef, onChange, onSetOpen }) => {
   const theme = useContext(ThemeContext);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const listRef = useRef<HTMLUListElement>(null);
 
   const handleKeydown = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Enter' || event.code !== 'Enter') {
+    if (event.key === 'Enter' || event.code === 'Enter') {
       onChange(options[selectedIndex]);
+      return;
+    }
+
+    if (event.key === 'Escape' || event.code === 'Escape') {
+      onSetOpen(false);
+      return;
     }
 
     const codes = ['ArrowDown', 'ArrowUp'];
@@ -73,6 +81,8 @@ const OptionDropdown: FunctionComponent<OptionDropdownProps> = ({ options, wrapp
       wrapperRef.current?.removeEventListener('keydown', handleKeydown, false);
     }
   }, [handleKeydown]);
+
+  useClickOutside(listRef, onSetOpen);
 
   if (!options.length) return null;
 
