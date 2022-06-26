@@ -3,7 +3,11 @@ import styled from 'styled-components';
 
 import { StyleRule, ThemeType } from '../../types';
 import { defaultTheme } from '../../const/theme';
-import { addStyleEmptyRule, calculateStyleArray } from '../../helpers/rules';
+import { addStyleEmptyRule } from '../../helpers/rules';
+import { calculateStyleArray, getCompiledStyle } from '../../helpers/style';
+
+import useReactiveEditor from '../../hooks/useReactiveEditor';
+import useFocusNextElement from '../../hooks/useFocusNextElement';
 import ThemeContext from '../../context/ThemeContext';
 
 import RuleWrapper from '../Rules/RuleWrapper';
@@ -37,41 +41,12 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
   }, [stringifiedTheme]);
 
   const compiledStyle = useMemo(() => {
-    const result: string[] = [];
-    localStyle.forEach(rule => {
-      if (rule.property.trim()) {
-        result.push(`${rule.property.trim()}: ${rule.value.trim()}`);
-      }
-    });
-    const compiled = result.join(';\n');
-    return compiled;
+    return getCompiledStyle(localStyle);
   }, [localStyle]);
 
-  useEffect(() => {
-    if (!reactive) return;
+  useReactiveEditor(style, reactive, setLocalStyle);
 
-    const result = calculateStyleArray(style);
-    setLocalStyle(prev => {
-      if (JSON.stringify(prev) === JSON.stringify(result)) {
-        return prev;
-      }
-      return result;
-    });
-  }, [style, reactive]);
-
-  const handleFocusNextElement = useCallback(() => {
-    const activeElement = document.activeElement;
-    if (!activeElement || activeElement.tagName.toLowerCase() !== 'input') return;
-
-    const order = Number(activeElement.getAttribute('data-editor-order'));
-    const parent = wrapperRef.current;
-    if (!parent) return;
-
-    const next = parent.querySelector(`input[data-editor-order="${order + 1}"]`);
-    if (next) {
-      (next as any).select();
-    }
-  }, []);
+  const handleFocusNextElement = useFocusNextElement(wrapperRef);
 
   const handleKeydown = useCallback((event: KeyboardEvent) => {
     const focusNextKeys = [':', ';'];
