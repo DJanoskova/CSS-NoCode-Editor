@@ -3,10 +3,16 @@ import styled from 'styled-components';
 
 import { StyleRule, ThemeType } from '../../types';
 import { defaultTheme } from '../../const/theme';
-import { addStyleEmptyRule, calculateStyleArray } from '../../helpers/rules';
+import { addStyleEmptyRule } from '../../helpers/rules';
+import { calculateStyleArray, getCompiledStyle } from '../../helpers/style';
+
+import useReactiveEditor from '../../hooks/useReactiveEditor';
+import useFocusNextElement from '../../hooks/useFocusNextElement';
 import ThemeContext from '../../context/ThemeContext';
 
 import RuleWrapper from '../Rules/RuleWrapper';
+import { getStyleProperties } from '../../helpers/document';
+import CSSPropertiesContext from '../../context/CSSPropertiesContext';
 
 interface CSSBuilderProps {
   style: string;
@@ -37,41 +43,17 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
   }, [stringifiedTheme]);
 
   const compiledStyle = useMemo(() => {
-    const result: string[] = [];
-    localStyle.forEach(rule => {
-      if (rule.property.trim()) {
-        result.push(`${rule.property.trim()}: ${rule.value.trim()}`);
-      }
-    });
-    const compiled = result.join(';\n');
-    return compiled;
+    return getCompiledStyle(localStyle);
   }, [localStyle]);
 
-  useEffect(() => {
-    if (!reactive) return;
-
-    const result = calculateStyleArray(style);
-    setLocalStyle(prev => {
-      if (JSON.stringify(prev) === JSON.stringify(result)) {
-        return prev;
-      }
-      return result;
-    });
-  }, [style, reactive]);
-
-  const handleFocusNextElement = useCallback(() => {
-    const activeElement = document.activeElement;
-    if (!activeElement || activeElement.tagName.toLowerCase() !== 'input') return;
-
-    const order = Number(activeElement.getAttribute('data-editor-order'));
-    const parent = wrapperRef.current;
-    if (!parent) return;
-
-    const next = parent.querySelector(`input[data-editor-order="${order + 1}"]`);
-    if (next) {
-      (next as any).select();
-    }
+  const availableProperties = useMemo(() => {
+    const properties = getStyleProperties();
+    return properties;
   }, []);
+
+  useReactiveEditor(style, reactive, setLocalStyle);
+
+  const handleFocusNextElement = useFocusNextElement(wrapperRef);
 
   const handleKeydown = useCallback((event: KeyboardEvent) => {
     const focusNextKeys = [':', ';'];
@@ -121,26 +103,28 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
   }, []);
 
   return (
-    <ThemeContext.Provider value={combinedTheme}>
-      <StyledWrapper
-        fontSize={combinedTheme.fontSize}
-        color={combinedTheme.color}
-        spacing={combinedTheme.spacing}
-        ref={wrapperRef}
-      >
-        {localStyle.map((rule, index) => {
-          return (
-            <RuleWrapper
-              data={rule}
-              key={rule.id}
-              onChange={handleChange}
-              onRemove={handleRemove}
-              order={index * 2}
-            />
-          )
-        })}
-      </StyledWrapper>
-    </ThemeContext.Provider>
+    <CSSPropertiesContext.Provider value={availableProperties}>
+      <ThemeContext.Provider value={combinedTheme}>
+        <StyledWrapper
+          fontSize={combinedTheme.fontSize}
+          color={combinedTheme.color}
+          spacing={combinedTheme.spacing}
+          ref={wrapperRef}
+        >
+          {localStyle.map((rule, index) => {
+            return (
+              <RuleWrapper
+                data={rule}
+                key={rule.id}
+                onChange={handleChange}
+                onRemove={handleRemove}
+                order={index * 2}
+              />
+            )
+          })}
+        </StyledWrapper>
+      </ThemeContext.Provider>
+    </CSSPropertiesContext.Provider>
   );
 };
 
