@@ -35,17 +35,27 @@ const RuleName: FunctionComponent<RuleNameProps> = ({ value = '', onChange, full
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const trimmedValue = localValue.trim();
+
   const cssProperties = useContext(CSSPropertiesContext);
 
   const availableProperties = useMemo(() => {
-    return cssProperties.filter(property => property.startsWith(localValue.toLowerCase()));
-  }, [cssProperties, localValue]);
+    if (!trimmedValue) return [];
+
+    return cssProperties.filter(property => property.startsWith(trimmedValue.toLowerCase()));
+  }, [cssProperties, trimmedValue]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setLocalValue(newValue);
     onChange(newValue);
     setIsDropdownOpen(true);
+  }
+
+  const handleChangeFromDropdown = (newValue: string) => {
+    setLocalValue(newValue);
+    onChange(newValue);
+    setIsDropdownOpen(false);
   }
 
   const handleOpenEdit = () => {
@@ -69,7 +79,13 @@ const RuleName: FunctionComponent<RuleNameProps> = ({ value = '', onChange, full
           order={order}
           transparent
         />
-        {isDropdownOpen && <OptionDropdown options={availableProperties} wrapperRef={inputRef} />}
+        {isDropdownOpen && (
+          <OptionDropdown
+            options={availableProperties}
+            wrapperRef={inputRef}
+            onChange={handleChangeFromDropdown}
+          />
+        )}
       </form>
     </StyledNameWrapper>
   )

@@ -1,17 +1,18 @@
-import React, { FunctionComponent, RefObject, useCallback, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import ThemeContext from '../../context/ThemeContext';
 import styled from 'styled-components';
 
 interface OptionDropdownProps {
   options: string[];
-  wrapperRef: RefObject<HTMLDivElement>
+  wrapperRef: RefObject<HTMLDivElement>;
+  onChange: (value: string) => void;
 }
 
 const ListStyled = styled.ul<{ radius: number; inputBg: string; }>`
   border-radius: ${({ radius }) => radius}px;
   background-color: ${({ inputBg }) => inputBg};
   position: absolute;
-  top: 0;
+  top: 30px;
   left: 0;
   z-index: 2;
   list-style-type: none;
@@ -30,24 +31,36 @@ const ListIemStyled = styled.li<{ selected: boolean; accent: string; spacing: nu
 const OptionDropdown: FunctionComponent<OptionDropdownProps> = ({ options, wrapperRef }) => {
   const theme = useContext(ThemeContext);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const handleKeydown = useCallback((event: KeyboardEvent) => {
-    const codes = ['ArrowDown', 'ArrowUp'];
+    if (event.key === 'Enter' || event.code !== 'Enter') {
+      onChange(options[selectedIndex]);
+    }
 
+    const codes = ['ArrowDown', 'ArrowUp'];
     if (!codes.includes(event.code)) return;
 
+    handleMoveFocus(event.code);
+  }, [selectedIndex, onChange]);
+
+  const handleMoveFocus = useCallback((code: string) => {
     setSelectedIndex(prev => {
       let newValue: number;
-      if (event.code === 'ArrowDown') {
+      if (code === 'ArrowDown') {
         newValue = prev + 1;
       } else {
         newValue = prev - 1;
       }
 
-      if (newValue < 0 || newValue >= options.length) return prev;
+      const optionEl = listRef.current?.querySelector(`[data-id="item-${newValue}"]`);
+      if (!optionEl) return prev;
+
+      optionEl?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+
       return newValue;
     });
-  }, [options]);
+  }, []);
 
   useEffect(() => {
     setSelectedIndex(0);
@@ -61,14 +74,17 @@ const OptionDropdown: FunctionComponent<OptionDropdownProps> = ({ options, wrapp
     }
   }, [handleKeydown]);
 
+  if (!options.length) return null;
+
   return (
-    <ListStyled inputBg={theme.inputBg} radius={theme.radius}>
+    <ListStyled inputBg={theme.inputBg} radius={theme.radius} ref={listRef}>
       {options.map((option, index) => (
         <ListIemStyled
           key={option}
           selected={index === selectedIndex}
           accent={theme.accent}
           spacing={theme.spacing}
+          data-id={`item-${index}`}
         >
           {option}
         </ListIemStyled>
