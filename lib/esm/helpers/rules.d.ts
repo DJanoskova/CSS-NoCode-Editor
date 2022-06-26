@@ -10,5 +10,4 @@ export declare const getRuleRange: (property: string, unit?: string) => {
     max: number;
     step?: undefined;
 };
-export declare const calculateStyleArray: (style: string) => StyleRule[];
 export declare const addStyleEmptyRule: (style: StyleRule[]) => void;

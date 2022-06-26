@@ -11,6 +11,8 @@ import useFocusNextElement from '../../hooks/useFocusNextElement';
 import ThemeContext from '../../context/ThemeContext';
 
 import RuleWrapper from '../Rules/RuleWrapper';
+import { getStyleProperties } from '../../helpers/document';
+import CSSPropertiesContext from '../../context/CSSPropertiesContext';
 
 interface CSSBuilderProps {
   style: string;
@@ -43,6 +45,11 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
   const compiledStyle = useMemo(() => {
     return getCompiledStyle(localStyle);
   }, [localStyle]);
+
+  const availableProperties = useMemo(() => {
+    const properties = getStyleProperties();
+    return properties;
+  }, []);
 
   useReactiveEditor(style, reactive, setLocalStyle);
 
@@ -96,26 +103,28 @@ const CSSBuilder: FunctionComponent<CSSBuilderProps> = ({ style = '', theme = {}
   }, []);
 
   return (
-    <ThemeContext.Provider value={combinedTheme}>
-      <StyledWrapper
-        fontSize={combinedTheme.fontSize}
-        color={combinedTheme.color}
-        spacing={combinedTheme.spacing}
-        ref={wrapperRef}
-      >
-        {localStyle.map((rule, index) => {
-          return (
-            <RuleWrapper
-              data={rule}
-              key={rule.id}
-              onChange={handleChange}
-              onRemove={handleRemove}
-              order={index * 2}
-            />
-          )
-        })}
-      </StyledWrapper>
-    </ThemeContext.Provider>
+    <CSSPropertiesContext.Provider value={availableProperties}>
+      <ThemeContext.Provider value={combinedTheme}>
+        <StyledWrapper
+          fontSize={combinedTheme.fontSize}
+          color={combinedTheme.color}
+          spacing={combinedTheme.spacing}
+          ref={wrapperRef}
+        >
+          {localStyle.map((rule, index) => {
+            return (
+              <RuleWrapper
+                data={rule}
+                key={rule.id}
+                onChange={handleChange}
+                onRemove={handleRemove}
+                order={index * 2}
+              />
+            )
+          })}
+        </StyledWrapper>
+      </ThemeContext.Provider>
+    </CSSPropertiesContext.Provider>
   );
 };
 

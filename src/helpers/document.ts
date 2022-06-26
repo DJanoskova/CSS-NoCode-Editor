@@ -1,27 +1,32 @@
+/**
+ * All the credit goes to Lea Verou
+ * https://lea.verou.me/2020/07/introspecting-css-via-the-css-om-getting-supported-properties-shorthands-longhands/
+ */
 export const getStyleProperties = () => {
   const style = document.body.style;
-  // @ts-ignore
-  let properties = Object.getOwnPropertyNames(style.hasOwnProperty("background") ? style : style.__proto__);
+  let properties = Object.getOwnPropertyNames(style.hasOwnProperty('background') ? style : (style as any).__proto__);
 
-  console.log(style);
-  console.log(style.hasOwnProperty("background"));
-  console.log(Object.getOwnPropertyNames(style));
-  // @ts-ignore
-  console.log(Object.getOwnPropertyNames(style.__proto__));
-
-  properties = properties.filter(p => style[p] === "") // drop functions etc
+  properties = properties.filter(p => style[p] === '')
     .map(prop => {
-      prop = prop.replace(/[A-Z]/g, function ($0) {
-        return '-' + $0.toLowerCase()
+      prop = prop.replace(/[A-Z]/g, (value) => {
+        return '-' + value.toLowerCase()
       });
 
-      if (prop.startsWith("webkit-")) {
-        prop = "-" + prop;
+      if (prop.startsWith('webkit')) {
+        prop = '-' + prop;
       }
 
       return prop;
     });
 
-  // @ts-ignore
-  return [...new Set(properties)];
+  const existing: Record<string, true> = {};
+
+  properties = properties.filter(prop => {
+    if (existing[prop]) return false;
+
+    existing[prop] = true;
+    return true;
+  });
+
+  return properties;
 }
