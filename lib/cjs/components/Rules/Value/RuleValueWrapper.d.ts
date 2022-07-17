@@ -9,6 +9,7 @@ export interface RuleValueInputProps {
     onChange: (value: string) => void;
     valueRef?: RefObject<HTMLInputElement>;
     order?: number;
+    isValid?: boolean;
 }
 declare const RuleValueWrapper: FunctionComponent<RuleValueWrapperProps>;
 export default RuleValueWrapper;

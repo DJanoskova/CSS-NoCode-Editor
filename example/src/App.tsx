@@ -14,6 +14,18 @@ const styleString = `
     box-sizing: border-box;
 `
 
+// const darkTheme = {
+//   radius: 2,
+//   shadow: '0 3px 10px rgba(255, 255, 255, 0.2)',
+//   fontSize: '14px',
+//   spacing: 10,
+//   accent: 'limegreen',
+//   color: 'white',
+//   inputBg: '#79f179',
+//   inputColor: '#000000',
+//   background: 'black'
+// };
+
 const App = () => {
   const [style, setStyle] = useState(styleString);
 
@@ -23,6 +35,9 @@ const App = () => {
         <div className="editor-wrapper">
           <CSSBuilder style={style} onChange={setStyle}/>
         </div>
+        {/*<div className="editor-wrapper" style={{ background: '#111111' }}>*/}
+        {/*  <CSSBuilder style={style} onChange={setStyle} theme={darkTheme}/>*/}
+        {/*</div>*/}
         <div className="content-wrapper">
           <div className="content">
             <style>.circle {`{ ${style} }`}</style>

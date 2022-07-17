@@ -15,6 +15,8 @@ const InputStyled = styled.input<{
   radius: number;
   transparent: boolean;
   color: string;
+  inputError: string;
+  isValid?: boolean;
 }>`
   border-radius: ${({ radius }) => radius}px;
   background-color: ${({ inputBg, transparent }) => transparent ? 'transparent' : inputBg};
@@ -23,7 +25,7 @@ const InputStyled = styled.input<{
   text-align: inherit;
   width: 100%;
   outline: none;
-  border: 2px transparent solid;
+  border: 2px ${({ isValid = true, inputError }) => isValid ? 'transparent' : inputError} solid;
   font-family: inherit;
   font-size: inherit;
   color: ${({ inputColor, color, transparent }) => transparent ? color : inputColor};
@@ -50,6 +52,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>((props, ref) => {
       data-editor-order={props.order}
       inputColor={theme.inputColor}
       color={theme.color}
+      inputError={theme.inputError}
       {...props as any}
     />
   );

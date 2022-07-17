@@ -84,6 +84,7 @@ const RuleName: FunctionComponent<RuleNameProps> = ({ value = '', onChange, full
             options={availableProperties}
             wrapperRef={inputRef}
             onChange={handleChangeFromDropdown}
+            onSetOpen={setIsDropdownOpen}
           />
         )}
       </form>

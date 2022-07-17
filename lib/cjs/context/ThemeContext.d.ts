@@ -5,6 +5,7 @@ declare const ThemeContext: import("react").Context<{
     color: string;
     inputBg: string;
     inputColor: string;
+    inputError: string;
     shadow: string;
     radius: number;
     spacing: number;
