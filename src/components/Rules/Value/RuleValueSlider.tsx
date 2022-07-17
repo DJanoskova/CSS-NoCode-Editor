@@ -46,6 +46,9 @@ const RuleValueSlider: FunctionComponent<RuleValueSliderProps> = ({ value, onCha
 
   return (
     <WrapperStyled>
+      <InputWrapperStyled>
+        <RuleValueText value={value} onChange={handleChangeValue} {...inputProps} />
+      </InputWrapperStyled>
       <InputRangeStyled
         type="range"
         value={numberValue}
@@ -55,9 +58,6 @@ const RuleValueSlider: FunctionComponent<RuleValueSliderProps> = ({ value, onCha
         step={range.step || 1}
         accent={theme.accent}
       />
-      <InputWrapperStyled>
-        <RuleValueText value={value} onChange={handleChangeValue} {...inputProps} />
-      </InputWrapperStyled>
     </WrapperStyled>
   )
 }

@@ -1,5 +1,11 @@
 # react-css-nocode-editor
 
+`react-css-nocode-editor` is a React CSS code editor package that allows you a user friendly way to edit a CSS string in your React application. It provides the user with sliders, color pickers, keyboard navigation and a nice customizable UI so it's easy to plug in to any application. 
+
+Read more for visual examples of the editor and how to configure it.
+
+---
+
 `npm install react-css-nocode-editor --save`
 
 `yarn add react-css-nocode-editor`
